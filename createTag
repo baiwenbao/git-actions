@@ -1,0 +1,27 @@
+#!/usr/bin/env /usr/local/bin/node
+
+const clipboardy = require('clipboardy');
+const {shellSync} = require('execa');
+
+const projectMap = {
+    classstatic: 'classstatic',
+    mcstatic: 'mcstatic',
+    'class-node': 'class-node-package',
+    'mc-node': 'mc-node-package'
+};
+
+const git = '/usr/local/bin/git';
+
+const project = process.argv[2].split('/').slice(-1)[0];
+const branchName = shellSync(`${git} symbolic-ref --short -q HEAD`);
+const featureName = branchName.stdout;
+const featureId = featureName.includes('develop') ? '' : `_${branchName.stdout.split('_')[1]}`;
+const fill = n => n >= 10 ? n : `0${n}`;
+const date = new Date();
+const dateId = `${date.getFullYear()}${fill(date.getMonth() + 1)}${fill(date.getDate())}_${fill(date.getHours())}${fill(date.getMinutes())}`;
+const featureType = featureName.includes('develop') ? 't_q' : 't_b';
+const tag = `${featureType}_${projectMap[project]}${featureId}_${dateId}`;
+
+clipboardy.writeSync(tag);
+shellSync(`${git} tag ${tag}`);
+shellSync(`${git} push origin ${tag}`);
