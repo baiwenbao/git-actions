@@ -3,6 +3,8 @@
 const clipboardy = require('clipboardy');
 const {shellSync} = require('execa');
 
+const git = '/usr/local/bin/git';
+
 const projectMap = {
     classstatic: 'classstatic',
     mcstatic: 'mcstatic',
@@ -10,12 +12,23 @@ const projectMap = {
     'mc-node': 'mc-node-package'
 };
 
-const git = '/usr/local/bin/git';
+const projectMapKeys = Object.keys(projectMap);
 
-const project = process.argv[2].split('/').slice(-1)[0];
-const branchName = shellSync(`${git} symbolic-ref --short -q HEAD`);
-const featureName = branchName.stdout;
-const featureId = featureName.includes('develop') ? '' : `_${branchName.stdout.split('_')[1]}`;
+const getProject = () => {
+    const argvProject = process.argv[2];
+    let res = '';
+    if (argvProject) {
+        res = argvProject;
+    } else {
+        res = process.cwd(); 
+    }
+    return res.split('/').slice(-1)[0];
+};
+const project = getProject();
+if (!projectMapKeys.includes(project)) return;
+const branch = shellSync(`${git} symbolic-ref --short -q HEAD`);
+const featureName = branch.stdout;
+const featureId = featureName.includes('develop') ? '' : `_${featureName.split('_')[1]}`;
 const fill = n => n >= 10 ? n : `0${n}`;
 const date = new Date();
 const dateId = `${date.getFullYear()}${fill(date.getMonth() + 1)}${fill(date.getDate())}_${fill(date.getHours())}${fill(date.getMinutes())}`;
