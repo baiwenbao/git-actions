@@ -5,6 +5,17 @@ const {shellSync} = require('execa');
 
 const git = 'git';
 
+function getPlatform() {
+	switch (process.platform) {
+		case 'darwin':
+			return 'macos';
+		case 'win32':
+			return 'windows';
+	}
+}
+
+const platform = getPlatform();
+
 const projectMap = {
     classstatic: 'classstatic',
     mcstatic: 'mcstatic',
@@ -22,10 +33,14 @@ const getProject = () => {
     } else {
         res = process.cwd(); 
     }
-    return res.split('/').slice(-1)[0];
+    const splitStr = platform === 'windows' ? '\\' : '/';
+    return res.split(splitStr).slice(-1)[0];
 };
 const project = getProject();
-if (!projectMapKeys.includes(project)) return;
+if (!projectMapKeys.includes(project)) {
+    console.log('仓库路径不对', project);
+    return;
+}
 const branch = shellSync(`${git} symbolic-ref --short -q HEAD`);
 const featureName = branch.stdout;
 const featureId = featureName.includes('develop') ? '' : `_${featureName.split('_')[1]}`;
@@ -36,5 +51,6 @@ const featureType = featureName.includes('develop') ? 't_q' : 't_b';
 const tag = `${featureType}_${projectMap[project]}${featureId}_${dateId}`;
 
 clipboardy.writeSync(tag);
+console.log(tag);
 shellSync(`${git} tag ${tag}`);
 shellSync(`${git} push origin ${tag}`);
