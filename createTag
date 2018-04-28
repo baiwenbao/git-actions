@@ -1,9 +1,9 @@
-#!/usr/bin/env /usr/local/bin/node
+#!/usr/bin/env node
 
 const clipboardy = require('clipboardy');
 const {shellSync} = require('execa');
 
-const git = '/usr/local/bin/git';
+const git = 'git';
 
 const projectMap = {
     classstatic: 'classstatic',
