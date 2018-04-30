@@ -39,7 +39,7 @@ const getProject = () => {
 const project = getProject();
 if (!projectMapKeys.includes(project)) {
     console.log('仓库路径不对', project);
-    process.exit(1);
+    process.exit(8);
 }
 const branch = shellSync(`${git} symbolic-ref --short -q HEAD`);
 const featureName = branch.stdout;
