@@ -1,0 +1,2 @@
+#!/usr/bin/env node
+// git checkout -b feature/classstatic_HET-${hetId}_${dateId}

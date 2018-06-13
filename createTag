@@ -2,6 +2,7 @@
 
 const clipboardy = require('clipboardy');
 const {shellSync} = require('execa');
+const dayjs = require('dayjs');
 
 const git = 'git';
 
@@ -44,9 +45,7 @@ if (!projectMapKeys.includes(project)) {
 const branch = shellSync(`${git} symbolic-ref --short -q HEAD`);
 const featureName = branch.stdout;
 const featureId = featureName.includes('develop') ? '' : `_${featureName.split('_')[1]}`;
-const fill = n => n >= 10 ? n : `0${n}`;
-const date = new Date();
-const dateId = `${date.getFullYear()}${fill(date.getMonth() + 1)}${fill(date.getDate())}_${fill(date.getHours())}${fill(date.getMinutes())}`;
+const dateId = dayjs().format('YYYYMMDD_HHmm');
 const featureType = featureName.includes('develop') ? 't_q' : 't_b';
 const tag = `${featureType}_${projectMap[project]}${featureId}_${dateId}`;
 

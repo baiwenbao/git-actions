@@ -1,15 +1,16 @@
 {
-  "name": "baiwenbao_git_actions",
+  "name": "@class/git-actions",
   "repository": {
     "type": "git",
     "url": "https://github.com/baiwenbao/git-actions.git"
   },
   "dependencies": {
     "clipboardy": "^1.2.3",
+    "dayjs": "^1.5.24",
     "execa": "^0.10.0"
   },
   "bin": {
     "createTag": "./createtag"
   },
-  "version": "0.0.7"
+  "version": "0.0.12"
 }
