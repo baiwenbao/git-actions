@@ -10,7 +10,7 @@
     "execa": "^0.10.0"
   },
   "bin": {
-    "createTag": "./createtag"
+    "createTag": "./createTag"
   },
-  "version": "0.0.12"
+  "version": "0.0.13"
 }
