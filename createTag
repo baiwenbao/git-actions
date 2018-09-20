@@ -22,7 +22,7 @@ const projectMap = {
     mcstatic: 'mcstatic',
     'class-node': 'class-node-package',
     'mc-node': 'mc-node-package',
-    'teacher-node': 'class-admin-teacher-node'
+    'class-admin-teacher-web': 'class-admin-teacher-node'
 };
 
 const projectMapKeys = Object.keys(projectMap);
